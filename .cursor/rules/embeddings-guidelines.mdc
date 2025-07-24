@@ -1,0 +1,5 @@
+---
+alwaysApply: true
+---
+I have a bunch of word embeddings trained using word2vec on data from huggingface's fineweb dataset from each year (2005-2022). I want to create an interactive platform where users can interact with these embeddings so they can see how language has evolved over time. Users should be able to see graphs over time as word vectors change, see which words are closest to which other words over time or for a given year, and see the vocabulary of words available. This project should run on github pages and be a part of a larger research project on how we can use embedding spaces to quantify how language has shifted over time.
+
