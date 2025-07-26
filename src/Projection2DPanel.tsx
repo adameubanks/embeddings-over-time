@@ -204,7 +204,7 @@ useEffect(() => {
           value={xPosWords}
           onChange={v => setXPosWords(Array.isArray(v) ? v : [])}
           label="Positive Pole Words"
-          sx={{ minWidth: 250, mb: 2, mr: 2 }}
+          sx={{ minWidth: 250, mb: 2 }}
           multiple={true}
         />
         <WordAutocompleteBox
@@ -225,7 +225,7 @@ useEffect(() => {
           value={yPosWords}
           onChange={v => setYPosWords(Array.isArray(v) ? v : [])}
           label="Positive Pole Words"
-          sx={{ minWidth: 250, mb: 2, mr: 2 }}
+          sx={{ minWidth: 250, mb: 2 }}
           multiple={true}
         />
         <WordAutocompleteBox

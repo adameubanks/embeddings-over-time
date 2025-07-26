@@ -11,7 +11,7 @@ interface NeighborsPanelProps {
 const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [vocab, setVocab] = useState<string[]>([]);
-  const [word, setWord] = useState<string>('');
+  const [words, setWords] = useState<string[]>([]);
   const [n, setN] = useState<number>(5);
   const [neighbors, setNeighbors] = useState<{word: string, similarity: number}[] | null>(null);
   const [loading, setLoading] = useState(false);
@@ -44,9 +44,9 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
   }, [selectedYear]);
 
   const handleFind = async () => {
-    if (!word || selectedYear == null) return;
+    if (!words.length || selectedYear == null) return;
     setLoading(true);
-    const result = await EmbeddingService.getNeighbors(selectedYear, word, n);
+    const result = await EmbeddingService.getNeighborsMultiple(selectedYear, words, n);
     setNeighbors(result);
     setLoading(false);
   };
@@ -68,15 +68,19 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, letterSpacing: 0.5 }}>
         Find Nearest Neighbors
       </Typography>
+      <Typography variant="body2" sx={{ mb: 2, color: '#666' }}>
+        Select multiple words to find their nearest neighbors. Results will show neighbors closest to the average of all selected words.
+      </Typography>
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'flex-start' }}>
         <YearSelectBox value={selectedYear} onChange={setSelectedYear} years={years} />
         <WordAutocompleteBox
           options={vocab}
-          value={word}
-          onChange={v => setWord(typeof v === 'string' ? v : '')}
-          label="Word"
+          value={words}
+          onChange={v => setWords(Array.isArray(v) ? v : [])}
+          label="Words"
           helperText="Type at least 2 letters to search"
           sx={{ minWidth: 300, flex: 1 }}
+          multiple={true}
         />
         <TextField
           label="N"
@@ -96,7 +100,7 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
           color="primary"
           onClick={handleFind}
           sx={{ height: 40, minWidth: 100, boxShadow: 'none', textTransform: 'none', fontWeight: 500, alignSelf: 'flex-start' }}
-          disabled={selectedYear == null || !word}
+          disabled={selectedYear == null || !words.length}
         >
           Find
         </Button>
@@ -113,15 +117,15 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
             <TableHead>
               <TableRow sx={{ borderBottom: '1px solid #eee' }}>
                 <TableCell sx={{ fontWeight: 600 }}>Rank</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Word</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Neighbor Word</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Cosine Similarity</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {neighbors.map((n, i) => (
-                <TableRow key={n.word} sx={{ borderBottom: '1px solid #f5f5f5' }}>
+                <TableRow key={`${n.word}-${i}`} sx={{ borderBottom: '1px solid #f5f5f5' }}>
                   <TableCell>{i + 1}</TableCell>
-                  <TableCell>{n.word}</TableCell>
+                  <TableCell sx={{ fontWeight: 500, color: '#1976d2' }}>{n.word}</TableCell>
                   <TableCell>{n.similarity.toFixed(4)}</TableCell>
                 </TableRow>
               ))}

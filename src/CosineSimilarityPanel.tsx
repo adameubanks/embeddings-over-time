@@ -9,15 +9,14 @@ interface CosineSimilarityPanelProps {
 }
 
 const CosineSimilarityPanel: React.FC<CosineSimilarityPanelProps> = ({ vocab }) => {
-  const [wordA, setWordA] = useState('');
-  const [wordB, setWordB] = useState('');
-  const [data, setData] = useState<{year: number, similarity: number}[] | null>(null);
+  const [wordGroups, setWordGroups] = useState<string[][]>([[], []]);
+  const [data, setData] = useState<{year: number, similarities: {groupIndex: number, similarity: number}[]}[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handlePlot = async () => {
-    if (!wordA || !wordB || wordA === wordB) return;
+    if (!wordGroups[0].length || !wordGroups[1].length) return;
     setLoading(true);
-    const result = await EmbeddingService.getCosineOverTime(wordA, wordB);
+    const result = await EmbeddingService.getCosineOverTimeMultiple(wordGroups);
     setData(result);
     setLoading(false);
   };
@@ -34,30 +33,35 @@ const CosineSimilarityPanel: React.FC<CosineSimilarityPanelProps> = ({ vocab }) 
       }}
     >
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, letterSpacing: 0.5 }}>
-        {wordA && wordB && wordA !== wordB
-          ? `Cosine Similarity: ${wordA} vs ${wordB}`
+        {wordGroups[0].length && wordGroups[1].length
+          ? `Cosine Similarity: ${wordGroups[0].join(', ')} vs ${wordGroups[1].join(', ')}`
           : 'Cosine Similarity Over Time'}
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 2, color: '#666' }}>
+        Select multiple words in each group to compare their average vectors over time.
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
         {/* Word A input */}
         <WordAutocompleteBox
           options={vocab}
-          value={wordA}
-          onChange={v => setWordA(typeof v === 'string' ? v : '')}
-          label="Word 1"
+          value={wordGroups[0]}
+          onChange={v => setWordGroups(prev => [Array.isArray(v) ? v : [], prev[1]])}
+          label="Word Group 1"
           helperText="Type at least 2 letters to search"
           sx={{ minWidth: 200, flex: 1 }}
+          multiple={true}
         />
         {/* Word B input */}
         <WordAutocompleteBox
           options={vocab}
-          value={wordB}
-          onChange={v => setWordB(typeof v === 'string' ? v : '')}
-          label="Word 2"
+          value={wordGroups[1]}
+          onChange={v => setWordGroups(prev => [prev[0], Array.isArray(v) ? v : []])}
+          label="Word Group 2"
           helperText="Type at least 2 letters to search"
           sx={{ minWidth: 200, flex: 1 }}
+          multiple={true}
         />
-        <Button variant="contained" onClick={handlePlot} disabled={!wordA || !wordB || wordA === wordB} sx={{ alignSelf: 'flex-start', height: 40, minWidth: 100, boxShadow: 'none', textTransform: 'none', fontWeight: 500 }}>
+        <Button variant="contained" onClick={handlePlot} disabled={!wordGroups[0].length || !wordGroups[1].length} sx={{ alignSelf: 'flex-start', height: 40, minWidth: 100, boxShadow: 'none', textTransform: 'none', fontWeight: 500 }}>
           Plot
         </Button>
       </Box>
@@ -69,7 +73,15 @@ const CosineSimilarityPanel: React.FC<CosineSimilarityPanelProps> = ({ vocab }) 
             <XAxis dataKey="year" tick={{ fontSize: 12 }} />
             <YAxis domain={[-1, 1]} tick={{ fontSize: 12 }} />
             <Tooltip formatter={(v: number) => v.toFixed(4)} />
-            <Line type="monotone" dataKey="similarity" stroke="#1976d2" dot />
+            {wordGroups.length >= 2 && (
+              <Line 
+                type="monotone" 
+                dataKey="similarities.0.similarity" 
+                stroke="#1976d2"
+                dot 
+                name={`Group 1 vs Group 2`}
+              />
+            )}
           </LineChart>
         </ResponsiveContainer>
       )}

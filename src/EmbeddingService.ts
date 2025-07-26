@@ -164,6 +164,86 @@ class EmbeddingService {
     const data = await this.fetchYear(year);
     return data.vocab;
   }
+
+  static getAverageVector(words: string[], vectors: Record<string, number[]>): number[] | null {
+    if (words.length === 0) return null;
+    
+    const validVectors = words
+      .map(word => vectors[word])
+      .filter(vec => vec !== undefined);
+    
+    if (validVectors.length === 0) return null;
+    
+    const dim = validVectors[0].length;
+    const avgVector = new Array(dim).fill(0);
+    
+    for (const vec of validVectors) {
+      for (let i = 0; i < dim; i++) {
+        avgVector[i] += vec[i];
+      }
+    }
+    
+    for (let i = 0; i < dim; i++) {
+      avgVector[i] /= validVectors.length;
+    }
+    
+    return avgVector;
+  }
+
+  static async getNeighborsMultiple(year: number, words: string[], n: number): Promise<{word: string, similarity: number}[]> {
+    const data = await this.fetchYear(year);
+    
+    // Calculate average vector of all input words
+    const avgVector = this.getAverageVector(words, data.vectors);
+    if (!avgVector) return [];
+    
+    // Find neighbors to the average vector
+    const results: {word: string, similarity: number}[] = [];
+    for (const w of data.vocab) {
+      if (words.includes(w)) continue; // Skip the input words themselves
+      const sim = this.cosineSimilarity(avgVector, data.vectors[w]);
+      results.push({word: w, similarity: sim});
+    }
+    
+    results.sort((a, b) => b.similarity - a.similarity);
+    return results.slice(0, n);
+  }
+
+  static async getCosineOverTimeMultiple(wordGroups: string[][]): Promise<{year: number, similarities: {groupIndex: number, similarity: number}[]}[]> {
+    const res = await fetch('embeddings/index.json');
+    const index: EmbeddingIndexEntry[] = await res.json();
+    const results: {year: number, similarities: {groupIndex: number, similarity: number}[]}[] = [];
+    
+    for (const entry of index) {
+      const data = await this.fetchYear(entry.year);
+      const yearResult: {year: number, similarities: {groupIndex: number, similarity: number}[]} = {
+        year: entry.year,
+        similarities: []
+      };
+      
+      // Calculate similarities between all pairs of groups
+      for (let i = 0; i < wordGroups.length; i++) {
+        for (let j = i + 1; j < wordGroups.length; j++) {
+          const vecA = this.getAverageVector(wordGroups[i], data.vectors);
+          const vecB = this.getAverageVector(wordGroups[j], data.vectors);
+          
+          if (vecA && vecB) {
+            const similarity = this.cosineSimilarity(vecA, vecB);
+            yearResult.similarities.push({
+              groupIndex: i * wordGroups.length + j,
+              similarity
+            });
+          }
+        }
+      }
+      
+      if (yearResult.similarities.length > 0) {
+        results.push(yearResult);
+      }
+    }
+    
+    return results;
+  }
 }
 
 export default EmbeddingService; 

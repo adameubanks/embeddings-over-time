@@ -177,7 +177,7 @@ const Projection1DPanel: React.FC = () => {
           value={posWords}
           onChange={v => setPosWords(Array.isArray(v) ? v : [])}
           label="Positive Pole Words"
-          sx={{ minWidth: 250, mb: 2, mr: 2 }}
+          sx={{ minWidth: 250, mb: 2 }}
           multiple={true}
         />
         <WordAutocompleteBox
