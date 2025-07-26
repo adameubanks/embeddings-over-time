@@ -38,7 +38,7 @@ const Projection2DPanel: React.FC = () => {
   // --- Chart size state for dynamic label positioning ---
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
-  // --- Filter for top 1 per quadrant and highlighted word ---
+  // --- Filter for up to 3 words per quadrant based on different directional criteria ---
   const filteredWords = React.useMemo(() => {
     if (!projectedWords.length) return [];
     const axisWords = new Set([
@@ -48,9 +48,18 @@ const Projection2DPanel: React.FC = () => {
       ...yNegWords,
     ]);
 
-    const quadrants: { [key: string]: { word: string; x: number; y: number; dist: number } | null } = {
-      I: null, II: null, III: null, IV: null
+    // Track maximum values for each direction in each quadrant
+    const quadrants: { [key: string]: { 
+      maxX: { word: string; x: number; y: number; value: number } | null;
+      maxY: { word: string; x: number; y: number; value: number } | null;
+      maxDiagonal: { word: string; x: number; y: number; value: number } | null;
+    }} = {
+      I: { maxX: null, maxY: null, maxDiagonal: null },
+      II: { maxX: null, maxY: null, maxDiagonal: null },
+      III: { maxX: null, maxY: null, maxDiagonal: null },
+      IV: { maxX: null, maxY: null, maxDiagonal: null }
     };
+
     for (const w of projectedWords) {
       if (axisWords.has(w.word)) continue; // skip axis words
       const dist = Math.sqrt(w.x * w.x + w.y * w.y);
@@ -59,17 +68,52 @@ const Projection2DPanel: React.FC = () => {
       else if (w.x < 0 && w.y >= 0) quad = 'II';
       else if (w.x < 0 && w.y < 0) quad = 'III';
       else if (w.x >= 0 && w.y < 0) quad = 'IV';
+      
       if (quad) {
-        if (!quadrants[quad] || dist > (quadrants[quad]?.dist ?? -Infinity)) {
-          quadrants[quad] = { ...w, dist };
+        const q = quadrants[quad];
+        const absX = Math.abs(w.x);
+        const absY = Math.abs(w.y);
+        
+        // Track maximum X
+        if (!q.maxX || absX > q.maxX.value) {
+          q.maxX = { ...w, value: absX };
+        }
+        
+        // Track maximum Y
+        if (!q.maxY || absY > q.maxY.value) {
+          q.maxY = { ...w, value: absY };
+        }
+        
+        // Track maximum diagonal distance
+        if (!q.maxDiagonal || dist > q.maxDiagonal.value) {
+          q.maxDiagonal = { ...w, value: dist };
         }
       }
     }
-    // Collect top 1 per quadrant
+
+    // Collect up to 3 unique words per quadrant
     const result: { word: string; x: number; y: number }[] = [];
-    for (const q of Object.values(quadrants)) {
-      if (q) result.push({ word: q.word, x: q.x, y: q.y });
+    for (const quadKey of ['I', 'II', 'III', 'IV']) {
+      const q = quadrants[quadKey];
+      const uniqueWords = new Set<string>();
+      
+      // Add words from each category, avoiding duplicates
+      if (q.maxX && !uniqueWords.has(q.maxX.word)) {
+        result.push({ word: q.maxX.word, x: q.maxX.x, y: q.maxX.y });
+        uniqueWords.add(q.maxX.word);
+      }
+      
+      if (q.maxY && !uniqueWords.has(q.maxY.word)) {
+        result.push({ word: q.maxY.word, x: q.maxY.x, y: q.maxY.y });
+        uniqueWords.add(q.maxY.word);
+      }
+      
+      if (q.maxDiagonal && !uniqueWords.has(q.maxDiagonal.word)) {
+        result.push({ word: q.maxDiagonal.word, x: q.maxDiagonal.x, y: q.maxDiagonal.y });
+        uniqueWords.add(q.maxDiagonal.word);
+      }
     }
+
     // Always include highlighted word if present and not already included
     if (searchWord) {
       const found = projectedWords.find(w => w.word === searchWord);
