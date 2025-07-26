@@ -4,34 +4,7 @@ import EmbeddingService from './EmbeddingService';
 import { ScatterChart, Scatter, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import WordAutocompleteBox from './components/WordAutocompleteBox';
 import YearSelectBox from './components/YearSelectBox';
-// Remove import Autocomplete and TextField, and remove filterWordOptions function
-
-// Helper: mean vector
-function meanVec(words: string[], vectors: Record<string, number[]>): number[] | null {
-  if (!words.length) return null;
-  const validVecs = words.map(w => vectors[w]).filter(Boolean);
-  if (!validVecs.length) return null;
-  const dim = validVecs[0].length;
-  const sum = new Array(dim).fill(0);
-  for (const v of validVecs) for (let i = 0; i < dim; ++i) sum[i] += v[i];
-  return sum.map(x => x / validVecs.length);
-}
-
-// Helper: subtract vectors
-function subVec(a: number[], b: number[]): number[] {
-  return a.map((x, i) => x - b[i]);
-}
-
-// Helper: dot product
-function dot(a: number[], b: number[]): number {
-  return a.reduce((acc, x, i) => acc + x * b[i], 0);
-}
-
-// Helper: normalize
-function normalize(v: number[]): number[] {
-  const norm = Math.sqrt(dot(v, v));
-  return norm === 0 ? v : v.map(x => x / norm);
-}
+import { meanVec, subVec, dot, normalize } from './utils/vectorMath';
 
 const Projection2DPanel: React.FC = () => {
   // State for years and vocab
