@@ -86,9 +86,6 @@ const App: React.FC = () => {
         elevation={0}
         sx={{ py: 2, px: 2, mt: 'auto', bgcolor: 'grey.100', borderTop: 1, borderColor: 'divider', textAlign: 'center', width: '100%' }}
       >
-        <Typography variant="body2" color="text.secondary">
-          A project by BYU IDeA Labs
-        </Typography>
       </Paper>
     </Box>
   );
