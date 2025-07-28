@@ -29,7 +29,9 @@ This project is part of a larger research initiative exploring how embedding spa
 
 ## 📊 Dataset
 
-The embeddings are trained on yearly snapshots of the FineWeb dataset, providing a comprehensive view of language evolution from 2005 to 2022. Each year contains word vectors that capture the semantic relationships present in that time period's web content.
+Our embeddings are based on the [FineWeb dataset](https://huggingface.co/datasets/HuggingFaceFW/fineweb) from HuggingFace, specifically downloaded from the 350TB partition of this comprehensive web corpus. To create yearly snapshots of language evolution, we filtered articles by identifying those containing years in their URLs (2020, 2019, etc.) and grouped them accordingly. This process allowed us to create distinct yearly subsets spanning 2005-2022.
+
+For each year's article group, we trained word2vec embeddings using the word2vec library, capturing the semantic relationships present in that time period's web content. The resulting embeddings were then compressed for efficient storage and loading, providing a comprehensive view of language evolution across nearly two decades.
 
 ---
 
