@@ -36,3 +36,8 @@ For each year's article group, we trained word2vec embeddings using the word2vec
 ---
 
 *Built for research on quantifying language change through embedding spaces* 
+
+Deployment instructions:
+- `npm run dev`
+- `git add . && git commit -m "message" && git push`
+- `npm run deploy`

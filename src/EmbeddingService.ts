@@ -12,13 +12,7 @@ export type EmbeddingYearData = {
   vectors: Record<string, number[]>;
 };
 
-let neighborsWorker: Worker | null = null;
-function getNeighborsWorker(): Worker {
-  if (!neighborsWorker) {
-    neighborsWorker = new Worker(new URL('./NeighborsWorker.ts', import.meta.url), { type: 'module' });
-  }
-  return neighborsWorker;
-}
+
 
 class EmbeddingService {
   private static vocab: string[] | null = null;
@@ -113,35 +107,20 @@ class EmbeddingService {
     const cacheKey = `${year}:${word}:${n}`;
     if (this.neighborCache.has(cacheKey)) return this.neighborCache.get(cacheKey)!;
     const data = await this.fetchYear(year);
-    // Use Web Worker for similarity calculation
-    try {
-      const worker = getNeighborsWorker();
-      const vectors = data.vectors;
-      const targetWord = word;
-      return await new Promise((resolve) => {
-        const handleMessage = (e: MessageEvent) => {
-          worker.removeEventListener('message', handleMessage);
-          this.neighborCache.set(cacheKey, e.data);
-          resolve(e.data);
-        };
-        worker.addEventListener('message', handleMessage);
-        worker.postMessage({ vectors, targetWord, n });
-      });
-    } catch (err) {
-      // Fallback to main thread if worker fails
-      const targetVec = data.vectors[word];
-      if (!targetVec) return [];
-      const results: {word: string, similarity: number}[] = [];
-      for (const w of data.vocab) {
-        if (w === word) continue;
-        const sim = this.cosineSimilarity(targetVec, data.vectors[w]);
-        results.push({word: w, similarity: sim});
-      }
-      results.sort((a, b) => b.similarity - a.similarity);
-      const topN = results.slice(0, n);
-      this.neighborCache.set(cacheKey, topN);
-      return topN;
+    
+    // Use main thread calculation (removed Web Worker to fix build issues)
+    const targetVec = data.vectors[word];
+    if (!targetVec) return [];
+    const results: {word: string, similarity: number}[] = [];
+    for (const w of data.vocab) {
+      if (w === word) continue;
+      const sim = this.cosineSimilarity(targetVec, data.vectors[w]);
+      results.push({word: w, similarity: sim});
     }
+    results.sort((a, b) => b.similarity - a.similarity);
+    const topN = results.slice(0, n);
+    this.neighborCache.set(cacheKey, topN);
+    return topN;
   }
 
   static async getCosineOverTime(wordA: string, wordB: string): Promise<{year: number, similarity: number}[]> {
