@@ -20,9 +20,8 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
   // Fetch years and set default selectedYear
   useEffect(() => {
     async function fetchYears() {
-      const res = await fetch('embeddings/index.json');
-      const index = await res.json();
-      const yearList = index.map((e: {year: number}) => e.year).sort((a: number, b: number) => a - b);
+          const index = await EmbeddingService.fetchIndex();
+      const yearList = Object.keys(index).map(year => parseInt(year)).sort((a: number, b: number) => a - b);
       setYears(yearList);
       if (yearList.length > 0 && selectedYear == null) {
         setSelectedYear(Math.max(...yearList));
@@ -43,10 +42,19 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
     fetchVocab();
   }, [selectedYear]);
 
+  // Reset state when year changes
+  useEffect(() => {
+    setNeighbors(null);
+    setWords([]);
+    setN(5);
+  }, [selectedYear]);
+
   const handleFind = async () => {
     if (!words.length || selectedYear == null) return;
     setLoading(true);
+    console.log('Searching for neighbors:', { year: selectedYear, words, n });
     const result = await EmbeddingService.getNeighborsMultiple(selectedYear, words, n);
+    console.log('Neighbors result:', result);
     setNeighbors(result);
     setLoading(false);
   };

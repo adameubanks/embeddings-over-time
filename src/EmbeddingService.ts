@@ -2,8 +2,7 @@
 // Utility for fetching/caching embedding BINs and computing similarities
 
 export type EmbeddingIndexEntry = {
-  year: number;
-  vocab: string[];
+  words: string[];
 };
 
 export type EmbeddingYearData = {
@@ -19,80 +18,102 @@ class EmbeddingService {
   private static vocabPromise: Promise<string[]> | null = null;
   private static yearCache: Map<number, EmbeddingYearData> = new Map();
   private static neighborCache: Map<string, {word: string, similarity: number}[]> = new Map();
+  private static indexCache: Map<number, string[]> = new Map();
+  private static indexPromise: Promise<Record<string, {words: string[]}>> | null = null;
 
   static async fetchVocab(): Promise<string[]> {
     if (this.vocab) return this.vocab;
     if (this.vocabPromise) return this.vocabPromise;
-    this.vocabPromise = fetch('embeddings/vocab.json')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch vocab.json');
-        return res.json();
-      })
-      .then(vocab => {
-        this.vocab = vocab;
-        return vocab;
+    this.vocabPromise = this.fetchYear(2005)
+      .then(data => {
+        this.vocab = data.vocab;
+        return data.vocab;
       });
     return this.vocabPromise;
   }
 
+  static async fetchIndex(): Promise<Record<string, {words: string[]}>> {
+    if (this.indexPromise) return this.indexPromise;
+    this.indexPromise = fetch('embeddings/index.bin')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch index.bin');
+        return res.arrayBuffer();
+      })
+      .then(buffer => {
+        const dv = new DataView(buffer);
+        let offset = 0;
+        
+        // Read number of years (4 bytes)
+        const numYears = dv.getUint32(offset, true);
+        offset += 4;
+        
+        const index: Record<string, {words: string[]}> = {};
+        for (let i = 0; i < numYears; i++) {
+          // Read year, vocab_size, dimension (each 4 bytes)
+          const year = dv.getUint32(offset, true);
+          offset += 4;
+          const vocabSize = dv.getUint32(offset, true);
+          offset += 4;
+          offset += 4; // Skip dimension (not needed for index)
+          
+          index[year.toString()] = {
+            words: Array.from({length: vocabSize}, (_, i) => i.toString())
+          };
+        }
+        
+        return index;
+      });
+    return this.indexPromise;
+  }
+
   static async fetchYear(year: number): Promise<EmbeddingYearData> {
     if (this.yearCache.has(year)) return this.yearCache.get(year)!;
-    const vocab = await this.fetchVocab();
-    const res = await fetch(`embeddings/embeddings_${year}.bin`);
-    if (!res.ok) throw new Error(`Failed to fetch embeddings_${year}.bin`);
+    const res = await fetch(`embeddings/word2vec_${year}.bin`);
+    if (!res.ok) throw new Error(`Failed to fetch word2vec_${year}.bin`);
     const buffer = await res.arrayBuffer();
-    const data = this.parseEmbeddingBin(buffer, vocab, year);
+    const data = this.parseEmbeddingBin(buffer, year);
     this.yearCache.set(year, data);
     return data;
   }
 
-  private static parseEmbeddingBin(buffer: ArrayBuffer, vocab: string[], year: number): EmbeddingYearData {
+  private static parseEmbeddingBin(buffer: ArrayBuffer, year: number): EmbeddingYearData {
     const dv = new DataView(buffer);
     let offset = 0;
-    // Magic number
-    const magic = String.fromCharCode(
-      dv.getUint8(offset),
-      dv.getUint8(offset + 1),
-      dv.getUint8(offset + 2),
-      dv.getUint8(offset + 3)
-    );
-    if (magic !== 'EMBD') {
-      throw new Error(`Invalid magic number in embeddings_${year}.bin: ${magic}`);
+    
+    // Read header: vocab_size (4 bytes), dimension (4 bytes)
+    const vocabSize = dv.getUint32(offset, true);
+    offset += 4;
+    const dimension = dv.getUint32(offset, true);
+    offset += 4;
+    
+    // Read vocabulary as null-terminated strings
+    const vocab: string[] = [];
+    for (let i = 0; i < vocabSize; i++) {
+      let word = '';
+      while (offset < buffer.byteLength) {
+        const char = dv.getUint8(offset);
+        offset++;
+        if (char === 0) break; // null terminator
+        word += String.fromCharCode(char);
+      }
+      vocab.push(word);
     }
-    offset += 4;
-    // Vector dimension
-    const dim = dv.getUint16(offset, true);
-    offset += 2;
-    // Number of words
-    const numWords = dv.getUint32(offset, true);
-    offset += 4;
+    
+    // Read vectors as float32 array
     const vectors: Record<string, number[]> = {};
-    const presentWords: string[] = [];
-    for (let i = 0; i < numWords; ++i) {
-      if (offset + 4 > buffer.byteLength) {
-        throw new Error(`Unexpected end of file while reading word index at word ${i}`);
-      }
-      const wordIdx = dv.getUint32(offset, true);
-      offset += 4;
-      if (wordIdx < 0 || wordIdx >= vocab.length) {
-        throw new Error(`Word index ${wordIdx} out of bounds in embeddings_${year}.bin`);
-      }
-      if (offset + dim * 4 > buffer.byteLength) {
-        throw new Error(`Unexpected end of file while reading vector for word index ${wordIdx}`);
-      }
-      const vec: number[] = [];
-      for (let d = 0; d < dim; ++d) {
-        vec.push(dv.getFloat32(offset, true));
+    for (const word of vocab) {
+      const vector: number[] = [];
+      for (let j = 0; j < dimension; j++) {
+        vector.push(dv.getFloat32(offset, true));
         offset += 4;
       }
-      const word = vocab[wordIdx];
-      vectors[word] = vec;
-      presentWords.push(word);
+      vectors[word] = vector;
     }
+    
     return {
-      year,
-      vocab: presentWords,
-      vectors
+      vocab,
+      vectors,
+      year
     };
   }
 
@@ -124,32 +145,49 @@ class EmbeddingService {
   }
 
   static async getCosineOverTime(wordA: string, wordB: string): Promise<{year: number, similarity: number}[]> {
-    // Use index.json to get available years
-    const res = await fetch('embeddings/index.json');
-    const index: EmbeddingIndexEntry[] = await res.json();
+    // Use index.bin to get available years
+    const index = await this.fetchIndex();
     const results: {year: number, similarity: number}[] = [];
-    for (const entry of index) {
-      const data = await this.fetchYear(entry.year);
+    for (const year of Object.keys(index)) {
+      const yearNum = parseInt(year);
+      const data = await this.fetchYear(yearNum);
       const vecA = data.vectors[wordA];
       const vecB = data.vectors[wordB];
       if (vecA && vecB) {
-        results.push({year: entry.year, similarity: this.cosineSimilarity(vecA, vecB)});
+        results.push({year: yearNum, similarity: this.cosineSimilarity(vecA, vecB)});
       }
     }
     return results;
   }
 
   static async getVocabForYear(year: number): Promise<string[]> {
-    const data = await this.fetchYear(year);
-    return data.vocab;
+    if (this.indexCache.has(year)) return this.indexCache.get(year)!;
+    const yearData = await this.fetchYear(year);
+    const vocab = yearData.vocab;
+    this.indexCache.set(year, vocab);
+    return vocab;
   }
 
+
+
   static getAverageVector(words: string[], vectors: Record<string, number[]>): number[] | null {
+    console.log('getAverageVector called:', { 
+      inputWords: words, 
+      vectorsKeys: Object.keys(vectors).slice(0, 10),
+      totalVectors: Object.keys(vectors).length
+    });
+    
     if (words.length === 0) return null;
     
     const validVectors = words
       .map(word => vectors[word])
       .filter(vec => vec !== undefined);
+    
+    console.log('Valid vectors found:', { 
+      inputWords: words, 
+      validVectorsCount: validVectors.length,
+      missingWords: words.filter(word => !vectors[word])
+    });
     
     if (validVectors.length === 0) return null;
     
@@ -166,14 +204,31 @@ class EmbeddingService {
       avgVector[i] /= validVectors.length;
     }
     
+    console.log('Average vector calculated successfully:', { 
+      dimension: dim, 
+      avgVectorLength: avgVector.length 
+    });
+    
     return avgVector;
   }
 
   static async getNeighborsMultiple(year: number, words: string[], n: number): Promise<{word: string, similarity: number}[]> {
+    console.log('getNeighborsMultiple called:', { year, words, n });
     const data = await this.fetchYear(year);
+    console.log('Year data loaded:', { 
+      year: data.year, 
+      vocabSize: data.vocab.length, 
+      vectorsSize: Object.keys(data.vectors).length,
+      sampleWords: data.vocab.slice(0, 5)
+    });
     
     // Calculate average vector of all input words
     const avgVector = this.getAverageVector(words, data.vectors);
+    console.log('Average vector calculated:', { 
+      inputWords: words, 
+      avgVectorExists: !!avgVector, 
+      avgVectorLength: avgVector?.length 
+    });
     if (!avgVector) return [];
     
     // Find neighbors to the average vector
@@ -185,18 +240,24 @@ class EmbeddingService {
     }
     
     results.sort((a, b) => b.similarity - a.similarity);
-    return results.slice(0, n);
+    const finalResults = results.slice(0, n);
+    console.log('Final neighbors result:', { 
+      totalResults: results.length, 
+      returnedResults: finalResults.length,
+      topResults: finalResults.slice(0, 3)
+    });
+    return finalResults;
   }
 
   static async getCosineOverTimeMultiple(wordGroups: string[][]): Promise<{year: number, similarities: {groupIndex: number, similarity: number}[]}[]> {
-    const res = await fetch('embeddings/index.json');
-    const index: EmbeddingIndexEntry[] = await res.json();
+    const index = await this.fetchIndex();
     const results: {year: number, similarities: {groupIndex: number, similarity: number}[]}[] = [];
     
-    for (const entry of index) {
-      const data = await this.fetchYear(entry.year);
+    for (const year of Object.keys(index)) {
+      const yearNum = parseInt(year);
+      const data = await this.fetchYear(yearNum);
       const yearResult: {year: number, similarities: {groupIndex: number, similarity: number}[]} = {
-        year: entry.year,
+        year: yearNum,
         similarities: []
       };
       

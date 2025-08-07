@@ -219,9 +219,8 @@ useEffect(() => {
 // Fetch years and set default selectedYear
 useEffect(() => {
   async function fetchYears() {
-    const res = await fetch('embeddings/index.json');
-    const index = await res.json();
-    const yearList = index.map((e: {year: number}) => e.year).sort((a: number, b: number) => a - b);
+    const index = await EmbeddingService.fetchIndex();
+    const yearList = Object.keys(index).map(year => parseInt(year)).sort((a: number, b: number) => a - b);
     setYears(yearList);
     if (yearList.length > 0 && selectedYear == null) {
       setSelectedYear(Math.max(...yearList));
@@ -349,13 +348,13 @@ useEffect(() => {
             <Scatter
               name="Words"
               data={filteredWords}
-              fill="#1976d2"
+              fill="#222"
               shape={(d: any) => {
                 // Highlight searchWord
                 if (searchWord && d.word === searchWord) {
                   return <circle cx={d.cx} cy={d.cy} r={8} fill="#d32f2f" stroke="#222" strokeWidth={2} />;
                 }
-                return <circle cx={d.cx} cy={d.cy} r={6} fill="#1976d2" stroke="#fff" strokeWidth={1} />;
+                return <circle cx={d.cx} cy={d.cy} r={6} fill="#222" stroke="#fff" strokeWidth={1} />;
               }}
               label={({ x, y, word }) => (
                 <text x={x} y={y - 10} textAnchor="middle" fontSize={12} fill={searchWord && word === searchWord ? '#d32f2f' : '#222'}>{word}</text>

@@ -29,31 +29,31 @@ function useWordAutocomplete(options: string[], inputValue: string): string[] {
     const prefixMatches: string[] = [];
     const substringMatches: string[] = [];
     for (const word of options) {
-      const lowerWord = word.toLowerCase();
-      if (lowerWord === lowerInput) {
+      const lowerWord = word?.toLowerCase() || '';
+      if (lowerWord && lowerWord === lowerInput) {
         exactMatch = word;
-      } else if (lowerWord.startsWith(lowerInput)) {
+      } else if (lowerWord && lowerWord.startsWith(lowerInput)) {
         prefixMatches.push(word);
-      } else if (lowerWord.includes(lowerInput)) {
+      } else if (lowerWord && lowerWord.includes(lowerInput)) {
         substringMatches.push(word);
       }
     }
     const result: string[] = [];
     if (exactMatch) result.push(exactMatch);
     // Remove duplicates from prefix and substring matches
-    const used = new Set(result.map(w => w.toLowerCase()));
+    const used = new Set(result.map(w => w?.toLowerCase() || ''));
     for (const w of prefixMatches) {
-      if (!used.has(w.toLowerCase())) {
+      if (!used.has(w?.toLowerCase() || '')) {
         result.push(w);
-        used.add(w.toLowerCase());
+        used.add(w?.toLowerCase() || '');
       }
       if (result.length >= 10) break;
     }
     if (result.length < 10) {
       for (const w of substringMatches) {
-        if (!used.has(w.toLowerCase())) {
+        if (!used.has(w?.toLowerCase() || '')) {
           result.push(w);
-          used.add(w.toLowerCase());
+          used.add(w?.toLowerCase() || '');
         }
         if (result.length >= 10) break;
       }

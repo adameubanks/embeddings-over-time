@@ -145,12 +145,17 @@ const Projection1DPanel: React.FC = () => {
     fetchVocab();
   }, [selectedYear]);
 
+  // Reset state when year changes
+  useEffect(() => {
+    setProjectedWords([]);
+    setSearchWord('');
+  }, [selectedYear]);
+
   // Fetch years and set default selectedYear
   useEffect(() => {
     async function fetchYears() {
-      const res = await fetch('embeddings/index.json');
-      const index = await res.json();
-      const yearList = index.map((e: {year: number}) => e.year).sort((a: number, b: number) => a - b);
+          const index = await EmbeddingService.fetchIndex();
+      const yearList = Object.keys(index).map(year => parseInt(year)).sort((a: number, b: number) => a - b);
       setYears(yearList);
       if (yearList.length > 0 && selectedYear == null) {
         setSelectedYear(Math.max(...yearList));
@@ -161,8 +166,8 @@ const Projection1DPanel: React.FC = () => {
   }, []);
 
   return (
-    <Box sx={{ background: '#fff', color: '#1976d2', borderRadius: 2, boxShadow: 1, p: 3, fontFamily: 'Lato, Roboto, serif', maxWidth: 1000, width: '100%', mx: 'auto' }}>
-      <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, letterSpacing: 0.5, color: '#1976d2' }}>
+    <Box sx={{ background: '#fff', color: '#222', borderRadius: 2, boxShadow: 1, p: 3, fontFamily: 'Lato, Roboto, serif', maxWidth: 1000, width: '100%', mx: 'auto' }}>
+      <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, letterSpacing: 0.5 }}>
         1D Embedding Projection
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
@@ -245,9 +250,9 @@ const Projection1DPanel: React.FC = () => {
             <Scatter
               name="Words"
               data={extremeWords}
-              fill="#1976d2"
+              fill="#222"
               shape={(d: any) => (
-                <circle cx={d.cx} cy={d.cy} r={6} fill="#1976d2" stroke="#fff" strokeWidth={1} />
+                <circle cx={d.cx} cy={d.cy} r={6} fill="#222" stroke="#fff" strokeWidth={1} />
               )}
             />
             {/* Highlighted word - rendered separately to ensure it always shows */}

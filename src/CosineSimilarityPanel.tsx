@@ -21,6 +21,8 @@ const CosineSimilarityPanel: React.FC<CosineSimilarityPanelProps> = ({ vocab }) 
     setLoading(false);
   };
 
+
+
   return (
     <Box
       sx={{
@@ -67,23 +69,25 @@ const CosineSimilarityPanel: React.FC<CosineSimilarityPanelProps> = ({ vocab }) 
       </Box>
       {loading && <Typography>Loading similarity data...</Typography>}
       {data && (
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data} margin={{ top: 16, right: 16, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="year" tick={{ fontSize: 12 }} />
-            <YAxis domain={[-1, 1]} tick={{ fontSize: 12 }} />
-            <Tooltip formatter={(v: number) => v.toFixed(4)} />
-            {wordGroups.length >= 2 && (
-              <Line 
-                type="monotone" 
-                dataKey="similarities.0.similarity" 
-                stroke="#1976d2"
-                dot 
-                name={`Group 1 vs Group 2`}
-              />
-            )}
-          </LineChart>
-        </ResponsiveContainer>
+        <>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={data} margin={{ top: 16, right: 16, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="year" tick={{ fontSize: 12 }} />
+              <YAxis domain={[-1, 1]} tick={{ fontSize: 12 }} />
+              <Tooltip formatter={(v: number) => v.toFixed(4)} />
+              {wordGroups.length >= 2 && (
+                <Line 
+                  type="monotone" 
+                  dataKey="similarities.0.similarity" 
+                  stroke="#1976d2"
+                  dot 
+                  name={`Group 1 vs Group 2`}
+                />
+              )}
+            </LineChart>
+          </ResponsiveContainer>
+        </>
       )}
     </Box>
   );

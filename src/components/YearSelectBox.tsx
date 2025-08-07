@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, CircularProgress, Box } from '@mui/material';
-// import EmbeddingService from '../EmbeddingService';
+import EmbeddingService from '../EmbeddingService';
 
 interface YearSelectBoxProps {
   value: number | null;
@@ -24,10 +24,9 @@ const YearSelectBox: React.FC<YearSelectBoxProps> = ({ value, onChange, children
     let mounted = true;
     async function fetchYears() {
       setLoading(true);
-      const res = await fetch('embeddings/index.json');
-      const index = await res.json();
+          const index = await EmbeddingService.fetchIndex();
       if (mounted) {
-        setYears(index.map((e: {year: number}) => e.year));
+        setYears(Object.keys(index).map(year => parseInt(year)));
         setLoading(false);
       }
     }
