@@ -5,9 +5,8 @@ import EmbeddingService from './EmbeddingService';
 import './App.css'
 import HomePage from './components/HomePage';
 import NeighborsPanel from './NeighborsPanel';
-import CosineSimilarityPanel from './CosineSimilarityPanel';
-import Projection2DPanel from './Projection2DPanel';
-import Projection1DPanel from './Projection1DPanel';
+import SemanticEvolutionPanel from './SemanticEvolutionPanel';
+import ProjectionPanel from './ProjectionPanel';
 import AnalogiesPanel from './AnalogiesPanel';
 
 const App: React.FC = () => {
@@ -67,9 +66,8 @@ const App: React.FC = () => {
           >
             <Tab label="Home" sx={{ minWidth: 100 }} />
             <Tab label="Nearest Neighbors" sx={{ minWidth: 150 }} />
-            <Tab label="Cosine Similarity Over Time" sx={{ minWidth: 220 }} />
-            <Tab label="2D Projection" sx={{ minWidth: 150 }} />
-            <Tab label="1D Projection" sx={{ minWidth: 150 }} />
+            <Tab label="Semantic Evolution" sx={{ minWidth: 150 }} />
+            <Tab label="Projection" sx={{ minWidth: 150 }} />
             <Tab label="Analogies" sx={{ minWidth: 120 }} />
           </Tabs>
         </Toolbar>
@@ -89,20 +87,15 @@ const App: React.FC = () => {
         )}
         {selectedTab === 2 && (
           <Box>
-            <CosineSimilarityPanel vocab={intersectionVocab} />
+            <SemanticEvolutionPanel vocab={intersectionVocab} />
           </Box>
         )}
         {selectedTab === 3 && (
           <Box>
-            <Projection2DPanel />
+            <ProjectionPanel />
           </Box>
         )}
         {selectedTab === 4 && (
-          <Box>
-            <Projection1DPanel />
-          </Box>
-        )}
-        {selectedTab === 5 && (
           <Box>
             <AnalogiesPanel />
           </Box>

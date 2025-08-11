@@ -11,9 +11,9 @@ An interactive platform for exploring how language has evolved over time through
 ## ✨ Features
 
 - **Nearest Neighbors**: Find the most semantically similar words for any term in a given year
-- **Cosine Similarity Over Time**: Track how the relationship between word groups changes across years
-- **2D Projection**: Visualize words in a customizable 2D semantic space
-- **1D Projection**: Project words onto a single semantic dimension for focused analysis
+- **Semantic Evolution**: Track how the relationship between word groups changes across years
+- **Embedding Projection**: Interactive 1D and 2D projections with customizable semantic axes
+- **Word Analogies**: Explore semantic relationships through vector arithmetic (e.g., "king - man + woman")
 
 ## 🛠️ Technology
 

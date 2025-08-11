@@ -67,7 +67,7 @@ const HomePage: React.FC = () => {
           <Card elevation={2}>
             <CardContent>
               <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                Cosine Similarity Over Time
+                Semantic Evolution
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Track how the relationship between word groups changes across years. Analyze semantic shifts and 
@@ -80,24 +80,11 @@ const HomePage: React.FC = () => {
           <Card elevation={2}>
             <CardContent>
               <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                2D Projection
+                Embedding Projection
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Visualize words in a customizable 2D semantic space. Explore word clusters and relationships 
-                in an interactive visualization.
-              </Typography>
-            </CardContent>
-          </Card>
-        </Box>
-        <Box sx={{ flex: '1 1 400px', minWidth: 0 }}>
-          <Card elevation={2}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                1D Projection
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Project words onto a single semantic dimension for focused analysis. Compare words along 
-                specific semantic axes.
+                Interactive 1D and 2D projections with customizable semantic axes. Toggle between modes to 
+                explore words along single dimensions or in 2D semantic spaces.
               </Typography>
             </CardContent>
           </Card>

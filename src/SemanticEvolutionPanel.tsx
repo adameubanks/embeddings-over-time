@@ -4,11 +4,11 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import EmbeddingService from './EmbeddingService';
 import WordAutocompleteBox from './components/WordAutocompleteBox';
 
-interface CosineSimilarityPanelProps {
+interface SemanticEvolutionPanelProps {
   vocab: string[];
 }
 
-const CosineSimilarityPanel: React.FC<CosineSimilarityPanelProps> = ({ vocab }) => {
+const SemanticEvolutionPanel: React.FC<SemanticEvolutionPanelProps> = ({ vocab }) => {
   const [wordGroups, setWordGroups] = useState<string[][]>([[], []]);
   const [data, setData] = useState<{year: number, similarities: {groupIndex: number, similarity: number}[]}[] | null>(null);
   const [loading, setLoading] = useState(false);
@@ -36,8 +36,8 @@ const CosineSimilarityPanel: React.FC<CosineSimilarityPanelProps> = ({ vocab }) 
     >
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, letterSpacing: 0.5 }}>
         {wordGroups[0].length && wordGroups[1].length
-          ? `Cosine Similarity: ${wordGroups[0].join(', ')} vs ${wordGroups[1].join(', ')}`
-          : 'Cosine Similarity Over Time'}
+          ? `Semantic Evolution: ${wordGroups[0].join(', ')} vs ${wordGroups[1].join(', ')}`
+          : 'Semantic Evolution Over Time'}
       </Typography>
       <Typography variant="body2" sx={{ mb: 2, color: '#666' }}>
         Select multiple words in each group to compare their average vectors over time.
@@ -93,4 +93,4 @@ const CosineSimilarityPanel: React.FC<CosineSimilarityPanelProps> = ({ vocab }) 
   );
 };
 
-export default CosineSimilarityPanel; 
+export default SemanticEvolutionPanel;
