@@ -36,8 +36,54 @@ const App: React.FC = () => {
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', bgcolor: 'background.default' }}>
       {/* Navbar */}
-      <AppBar position="static" color="primary" elevation={0} sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'primary.main' }}>
+      <AppBar position="static" elevation={0} sx={{ 
+        borderBottom: 1, 
+        borderColor: 'divider', 
+        bgcolor: '#1b5e20', // Forest green
+        background: 'linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%)', // Subtle gradient
+        '& .MuiTabs-indicator': {
+          backgroundColor: '#ff8f00', // Gold/amber underline
+          height: '3px',
+          borderRadius: '2px 2px 0 0'
+        },
+        '& .MuiTab-root': {
+          textTransform: 'none',
+          fontWeight: 500,
+          fontSize: '0.95rem',
+          '&.Mui-selected': {
+            color: '#fff',
+            fontWeight: 600
+          }
+        }
+      }}>
         <Toolbar sx={{ px: { xs: 1, sm: 2 }, minHeight: 56 }}>
+          {/* Brand Logo */}
+          <Box sx={{ 
+            mr: 3, 
+            display: 'flex', 
+            alignItems: 'center',
+            p: 1,
+            borderRadius: 1,
+            bgcolor: 'rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.2)'
+          }}>
+            <svg width="32" height="32" viewBox="0 0 32 32" style={{ filter: 'brightness(0) invert(1)' }}>
+              {/* Background circle for academic feel */}
+              <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.3"/>
+              {/* Data points with enhanced styling */}
+              <circle cx="4" cy="28" r="2.5" fill="currentColor"/>
+              <circle cx="12" cy="20" r="2.5" fill="currentColor"/>
+              <circle cx="20" cy="12" r="2.5" fill="currentColor"/>
+              <circle cx="28" cy="8" r="2.5" fill="currentColor"/>
+              {/* Connecting lines with better weight */}
+              <polyline points="4,28 12,20 20,12 28,8" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+              {/* Small accent dots for personality */}
+              <circle cx="8" cy="24" r="0.8" fill="currentColor" opacity="0.7"/>
+              <circle cx="16" cy="16" r="0.8" fill="currentColor" opacity="0.7"/>
+              <circle cx="24" cy="10" r="0.8" fill="currentColor" opacity="0.7"/>
+            </svg>
+          </Box>
+          
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600, letterSpacing: 0.5 }}>
             Embeddings Over Time Explorer
           </Typography>
@@ -60,8 +106,6 @@ const App: React.FC = () => {
             value={selectedTab}
             onChange={(_, v) => setSelectedTab(v)}
             textColor="inherit"
-            indicatorColor="secondary"
-            aria-label="panel tabs"
             sx={{ minHeight: 40 }}
           >
             <Tab label="Home" sx={{ minWidth: 100 }} />

@@ -80,7 +80,7 @@ const SemanticEvolutionPanel: React.FC<SemanticEvolutionPanelProps> = ({ vocab }
                 <Line 
                   type="monotone" 
                   dataKey="similarities.0.similarity" 
-                  stroke="#1976d2"
+                  stroke="#ff8f00"
                   dot 
                   name={`Group 1 vs Group 2`}
                 />

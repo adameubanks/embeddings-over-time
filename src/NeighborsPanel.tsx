@@ -133,7 +133,7 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
               {neighbors.map((n, i) => (
                 <TableRow key={`${n.word}-${i}`} sx={{ borderBottom: '1px solid #f5f5f5' }}>
                   <TableCell>{i + 1}</TableCell>
-                  <TableCell sx={{ fontWeight: 500, color: '#1976d2' }}>{n.word}</TableCell>
+                  <TableCell sx={{ fontWeight: 500, color: '#ff8f00' }}>{n.word}</TableCell>
                   <TableCell>{n.similarity.toFixed(4)}</TableCell>
                 </TableRow>
               ))}

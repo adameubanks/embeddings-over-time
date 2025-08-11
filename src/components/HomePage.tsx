@@ -6,19 +6,52 @@ const HomePage: React.FC = () => {
   return (
     <Box sx={{ maxWidth: '100%' }}>
       {/* Hero Section */}
-      <Paper elevation={2} sx={{ p: 4, mb: 4, textAlign: 'center', bgcolor: 'primary.light', color: 'primary.contrastText' }}>
-        <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
+      <Paper elevation={2} sx={{ 
+        p: 4, 
+        mb: 4, 
+        textAlign: 'center', 
+        background: 'linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%)',
+        color: 'white',
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'radial-gradient(circle at 30% 20%, rgba(255,143,0,0.1) 0%, transparent 50%)',
+          pointerEvents: 'none'
+        }
+      }}>
+        <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 700, position: 'relative', zIndex: 1 }}>
           Embeddings Over Time Explorer
         </Typography>
-        <Typography variant="h6" sx={{ mb: 3, opacity: 0.9 }}>
+        <Typography variant="h6" sx={{ mb: 3, opacity: 0.9, position: 'relative', zIndex: 1 }}>
           Explore how language has evolved over time through word embeddings
         </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap', position: 'relative', zIndex: 1 }}>
           <Link href="https://github.com/adameubanks/embeddings-over-time" target="_blank" sx={{ textDecoration: 'none' }}>
             <Chip 
               icon={<GitHub />} 
               label="View on GitHub" 
-              sx={{ bgcolor: 'rgba(255,255,255,0.2)', color: 'inherit', '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' } }}
+              sx={{ 
+                bgcolor: '#ff8f00', 
+                color: '#1b5e20',
+                fontWeight: 600,
+                fontSize: '0.9rem',
+                px: 2,
+                py: 1,
+                border: '2px solid #ff8f00',
+                '&:hover': { 
+                  bgcolor: '#ff9800',
+                  borderColor: '#f57c00',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 4px 8px rgba(255,143,0,0.3)'
+                },
+                transition: 'all 0.2s ease-in-out'
+              }}
               clickable
             />
           </Link>
@@ -26,8 +59,8 @@ const HomePage: React.FC = () => {
       </Paper>
 
       {/* Research Context */}
-      <Paper elevation={1} sx={{ p: 4, mb: 4 }}>
-        <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
+      <Paper elevation={1} sx={{ p: 4, mb: 4, borderLeft: '4px solid #ff8f00' }}>
+        <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3, color: '#1b5e20' }}>
           Research Context
         </Typography>
         <Typography variant="body1" paragraph>
@@ -51,9 +84,15 @@ const HomePage: React.FC = () => {
       {/* Features Grid */}
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 4 }}>
         <Box sx={{ flex: '1 1 400px', minWidth: 0 }}>
-          <Card elevation={2}>
+          <Card elevation={2} sx={{ 
+            border: '1px solid #e8f5e8',
+            '&:hover': { 
+              borderColor: '#1b5e20',
+              boxShadow: '0 4px 12px rgba(27, 94, 32, 0.15)'
+            }
+          }}>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20' }}>
                 Nearest Neighbors
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -64,9 +103,15 @@ const HomePage: React.FC = () => {
           </Card>
         </Box>
         <Box sx={{ flex: '1 1 400px', minWidth: 0 }}>
-          <Card elevation={2}>
+          <Card elevation={2} sx={{ 
+            border: '1px solid #e8f5e8',
+            '&:hover': { 
+              borderColor: '#1b5e20',
+              boxShadow: '0 4px 12px rgba(27, 94, 32, 0.15)'
+            }
+          }}>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20' }}>
                 Semantic Evolution
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -77,9 +122,15 @@ const HomePage: React.FC = () => {
           </Card>
         </Box>
         <Box sx={{ flex: '1 1 400px', minWidth: 0 }}>
-          <Card elevation={2}>
+          <Card elevation={2} sx={{ 
+            border: '1px solid #e8f5e8',
+            '&:hover': { 
+              borderColor: '#1b5e20',
+              boxShadow: '0 4px 12px rgba(27, 94, 32, 0.15)'
+            }
+          }}>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20' }}>
                 Embedding Projection
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -90,9 +141,15 @@ const HomePage: React.FC = () => {
           </Card>
         </Box>
         <Box sx={{ flex: '1 1 400px', minWidth: 0 }}>
-          <Card elevation={2}>
+          <Card elevation={2} sx={{ 
+            border: '1px solid #e8f5e8',
+            '&:hover': { 
+              borderColor: '#1b5e20',
+              boxShadow: '0 4px 12px rgba(27, 94, 32, 0.15)'
+            }
+          }}>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20' }}>
                 Word Analogies
               </Typography>
               <Typography variant="body2" color="text.secondary">
