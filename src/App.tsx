@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Box, CircularProgress, AppBar, Toolbar, Tabs, Tab, Paper } from '@mui/material';
+import { Container, Typography, Box, CircularProgress, AppBar, Toolbar, Tabs, Tab, Paper, IconButton, Tooltip } from '@mui/material';
+import { GitHub } from '@mui/icons-material';
 import EmbeddingService from './EmbeddingService';
 import './App.css'
+import HomePage from './components/HomePage';
 import NeighborsPanel from './NeighborsPanel';
 import CosineSimilarityPanel from './CosineSimilarityPanel';
 import Projection2DPanel from './Projection2DPanel';
@@ -39,6 +41,21 @@ const App: React.FC = () => {
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600, letterSpacing: 0.5 }}>
             Embeddings Over Time Explorer
           </Typography>
+          
+          {/* GitHub Link */}
+          <Box sx={{ mr: 2 }}>
+            <Tooltip title="View on GitHub">
+              <IconButton 
+                component="a" 
+                href="https://github.com/adameubanks/embeddings-over-time" 
+                target="_blank"
+                sx={{ color: 'inherit' }}
+              >
+                <GitHub />
+              </IconButton>
+            </Tooltip>
+          </Box>
+          
           <Tabs
             value={selectedTab}
             onChange={(_, v) => setSelectedTab(v)}
@@ -47,7 +64,8 @@ const App: React.FC = () => {
             aria-label="panel tabs"
             sx={{ minHeight: 40 }}
           >
-            <Tab label="Neighbors" sx={{ minWidth: 120 }} />
+            <Tab label="Home" sx={{ minWidth: 100 }} />
+            <Tab label="Nearest Neighbors" sx={{ minWidth: 150 }} />
             <Tab label="Cosine Similarity Over Time" sx={{ minWidth: 220 }} />
             <Tab label="2D Projection" sx={{ minWidth: 150 }} />
             <Tab label="1D Projection" sx={{ minWidth: 150 }} />
@@ -59,20 +77,25 @@ const App: React.FC = () => {
       <Container maxWidth="md" sx={{ flex: 1, py: 4, display: 'flex', flexDirection: 'column' }}>
         {selectedTab === 0 && (
           <Box>
-            <NeighborsPanel intersectionVocab={intersectionVocab} />
+            <HomePage />
           </Box>
         )}
         {selectedTab === 1 && (
           <Box>
-            <CosineSimilarityPanel vocab={intersectionVocab} />
+            <NeighborsPanel intersectionVocab={intersectionVocab} />
           </Box>
         )}
         {selectedTab === 2 && (
           <Box>
-            <Projection2DPanel />
+            <CosineSimilarityPanel vocab={intersectionVocab} />
           </Box>
         )}
         {selectedTab === 3 && (
+          <Box>
+            <Projection2DPanel />
+          </Box>
+        )}
+        {selectedTab === 4 && (
           <Box>
             <Projection1DPanel />
           </Box>

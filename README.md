@@ -21,7 +21,7 @@ An interactive platform for exploring how language has evolved over time through
 - **UI**: Material-UI
 - **Visualization**: Recharts
 - **Deployment**: GitHub Pages
-- **Data**: Word2vec embeddings from FineWeb dataset (2005-2022)
+- **Data**: Word2vec embeddings from FineWeb dataset (2005-2025)
 
 ## 🎯 Research Context
 
@@ -29,7 +29,7 @@ This project is part of a larger research initiative exploring how embedding spa
 
 ## 📊 Dataset
 
-Our embeddings are based on the [FineWeb dataset](https://huggingface.co/datasets/HuggingFaceFW/fineweb) from HuggingFace, specifically downloaded from the 350TB partition of this comprehensive web corpus. To create yearly snapshots of language evolution, we filtered articles by identifying those containing years in their URLs (2020, 2019, etc.) and grouped them accordingly. This process allowed us to create distinct yearly subsets spanning 2005-2022.
+The embeddings are based on the FineWeb dataset, specifically from the first 3 and last 3 web crawls of this comprehensive web corpus. To create yearly snapshots of language evolution, we filtered articles by identifying those containing years in their URLs (2020, 2019, etc.) and grouped them accordingly. This process allowed us to create distinct yearly subsets spanning 2005-2025.
 
 For each year's article group, we trained word2vec embeddings using the word2vec library, capturing the semantic relationships present in that time period's web content. The resulting embeddings were then compressed for efficient storage and loading, providing a comprehensive view of language evolution across nearly two decades.
 
