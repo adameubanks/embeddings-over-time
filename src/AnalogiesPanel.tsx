@@ -168,34 +168,6 @@ const AnalogiesPanel: React.FC = () => {
           </TableContainer>
         </Box>
       )}
-
-      <Box sx={{ mt: 4, p: 3, bgcolor: 'grey.50', borderRadius: 2 }}>
-        <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-          How it works
-        </Typography>
-        <Typography variant="body2" paragraph>
-          Word analogies work by performing vector arithmetic on word embeddings. When you enter "king - man + woman", 
-          the system:
-        </Typography>
-        <Box component="ul" sx={{ pl: 3, mb: 2 }}>
-          <Typography component="li" variant="body2">
-            Takes the vector for "king"
-          </Typography>
-          <Typography component="li" variant="body2">
-            Subtracts the vector for "man"
-          </Typography>
-          <Typography component="li" variant="body2">
-            Adds the vector for "woman"
-          </Typography>
-          <Typography component="li" variant="body2">
-            Finds words most similar to the resulting vector
-          </Typography>
-        </Box>
-        <Typography variant="body2">
-          This reveals semantic relationships like "king is to man as X is to woman", helping discover how language 
-          encodes gender, hierarchy, and other conceptual patterns.
-        </Typography>
-      </Box>
     </Box>
   );
 };
