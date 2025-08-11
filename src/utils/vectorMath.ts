@@ -6,8 +6,16 @@ export function meanVec(words: string[], vectors: Record<string, number[]>): num
   if (!validVecs.length) return null;
   const dim = validVecs[0].length;
   const sum = new Array(dim).fill(0);
-  for (const v of validVecs) for (let i = 0; i < dim; ++i) sum[i] += v[i];
+  for (const v of validVecs) {
+    for (let i = 0; i < dim; i++) {
+      sum[i] += v[i];
+    }
+  }
   return sum.map(x => x / validVecs.length);
+}
+
+export function addVec(a: number[], b: number[]): number[] {
+  return a.map((x, i) => x + b[i]);
 }
 
 export function subVec(a: number[], b: number[]): number[] {

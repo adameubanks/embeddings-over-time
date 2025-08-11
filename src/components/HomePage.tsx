@@ -102,6 +102,19 @@ const HomePage: React.FC = () => {
             </CardContent>
           </Card>
         </Box>
+        <Box sx={{ flex: '1 1 400px', minWidth: 0 }}>
+          <Card elevation={2}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                Word Analogies
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Explore semantic relationships through vector arithmetic. Enter expressions like "king - man + woman" 
+                to discover how language encodes conceptual patterns and relationships.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
       </Box>
     </Box>
   );

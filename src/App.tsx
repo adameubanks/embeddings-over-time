@@ -8,6 +8,7 @@ import NeighborsPanel from './NeighborsPanel';
 import CosineSimilarityPanel from './CosineSimilarityPanel';
 import Projection2DPanel from './Projection2DPanel';
 import Projection1DPanel from './Projection1DPanel';
+import AnalogiesPanel from './AnalogiesPanel';
 
 const App: React.FC = () => {
   const [intersectionVocab, setIntersectionVocab] = useState<string[]>([]);
@@ -69,6 +70,7 @@ const App: React.FC = () => {
             <Tab label="Cosine Similarity Over Time" sx={{ minWidth: 220 }} />
             <Tab label="2D Projection" sx={{ minWidth: 150 }} />
             <Tab label="1D Projection" sx={{ minWidth: 150 }} />
+            <Tab label="Analogies" sx={{ minWidth: 120 }} />
           </Tabs>
         </Toolbar>
       </AppBar>
@@ -98,6 +100,11 @@ const App: React.FC = () => {
         {selectedTab === 4 && (
           <Box>
             <Projection1DPanel />
+          </Box>
+        )}
+        {selectedTab === 5 && (
+          <Box>
+            <AnalogiesPanel />
           </Box>
         )}
       </Container>

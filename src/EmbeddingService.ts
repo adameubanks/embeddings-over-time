@@ -1,6 +1,8 @@
 // EmbeddingService.ts
 // Utility for fetching/caching embedding BINs and computing similarities
 
+import { addVec, subVec } from './utils/vectorMath';
+
 export type EmbeddingIndexEntry = {
   words: string[];
 };
@@ -283,6 +285,61 @@ class EmbeddingService {
     }
     
     return results;
+  }
+
+  static async computeAnalogy(year: number, expression: string, n: number = 10): Promise<{word: string, similarity: number}[]> {
+    const data = await this.fetchYear(year);
+    
+    // Parse expression like "king - man + woman"
+    const parts = expression.split(/\s*([+\-])\s*/).filter(part => part.trim());
+    
+    if (parts.length < 3) {
+      throw new Error('Invalid analogy expression. Use format like "king - man + woman"');
+    }
+    
+    let resultVector: number[] | null = null;
+    let operation: string | null = null;
+    
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i].trim();
+      
+      if (part === '+' || part === '-') {
+        operation = part;
+        continue;
+      }
+      
+      const word = part.toLowerCase();
+      const vector = data.vectors[word];
+      
+      if (!vector) {
+        throw new Error(`Word "${word}" not found in ${year} vocabulary`);
+      }
+      
+      if (resultVector === null) {
+        resultVector = [...vector];
+      } else if (operation === '+') {
+        resultVector = addVec(resultVector, vector);
+      } else if (operation === '-') {
+        resultVector = subVec(resultVector, vector);
+      }
+    }
+    
+    if (!resultVector) {
+      throw new Error('Failed to compute analogy vector');
+    }
+    
+    // Find words most similar to the result vector
+    const results: {word: string, similarity: number}[] = [];
+    for (const word of data.vocab) {
+      if (parts.some(part => part.trim().toLowerCase() === word.toLowerCase())) {
+        continue; // Skip the input words
+      }
+      const similarity = this.cosineSimilarity(resultVector, data.vectors[word]);
+      results.push({word, similarity});
+    }
+    
+    results.sort((a, b) => b.similarity - a.similarity);
+    return results.slice(0, n);
   }
 }
 
