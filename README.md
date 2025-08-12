@@ -1,6 +1,6 @@
-# Embeddings Over Time Explorer
+<img src="public/favicon.svg" height="100">
 
-![Logo](public/favicon.svg)
+# Embeddings Over Time Explorer
 
 An interactive platform for exploring how language has evolved over time through word embeddings. This project visualizes word2vec embeddings trained on the FineWeb dataset from 2005-2022, allowing users to track semantic changes and discover linguistic patterns across nearly two decades.
 
