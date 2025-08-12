@@ -1,4 +1,4 @@
-<img src="public/favicon.svg" height="100">
+<img src="favicon.svg" height="100">
 
 # Embeddings Over Time Explorer
 
