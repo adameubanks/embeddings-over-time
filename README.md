@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/adameubanks/embeddings-over-time/3aee3a88bb40ad58bfe0c1a95e47ce01f4bd5a9a/favicon.svg">
+<img src="https://raw.githubusercontent.com/adameubanks/embeddings-over-time/4e461a891eca27a0c67a8b3e8b57ec2acae066af/public/favicon.svg">
 
 # Embeddings Over Time Explorer
 
