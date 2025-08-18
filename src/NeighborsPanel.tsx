@@ -77,7 +77,7 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
         Find Nearest Neighbors
       </Typography>
       <Typography variant="body2" sx={{ mb: 2, color: '#666' }}>
-        Select multiple words to find their nearest neighbors. Results will show neighbors closest to the average of all selected words.
+        Compute argmax cosine similarity to find nearest neighbors in embedding space. Results show neighbors closest to the average of all selected word vectors.
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'flex-start' }}>
         <YearSelectBox value={selectedYear} onChange={setSelectedYear} years={years} />
@@ -93,7 +93,6 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
         <TextField
           label="N"
           type="number"
-          size="small"
           value={n}
           onChange={e => setN(Math.max(1, Math.min(vocab.length, Number(e.target.value))))}
           sx={{ width: 150 }}
@@ -107,7 +106,7 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
           variant="contained"
           color="primary"
           onClick={handleFind}
-          sx={{ height: 40, minWidth: 100, boxShadow: 'none', textTransform: 'none', fontWeight: 500, alignSelf: 'flex-start' }}
+          sx={{ height: '55px', minWidth: 100, boxShadow: 'none', textTransform: 'none', fontWeight: 500, alignSelf: 'flex-start' }}
           disabled={selectedYear == null || !words.length}
         >
           Find
@@ -121,7 +120,7 @@ const NeighborsPanel: React.FC<NeighborsPanelProps> = ({ }) => {
       )}
       {neighbors && (
         <TableContainer component={Paper} sx={{ mt: 2, maxWidth: 900, width: '100%', boxShadow: 'none', borderRadius: 1 }}>
-          <Table size="small">
+          <Table>
             <TableHead>
               <TableRow sx={{ borderBottom: '1px solid #eee' }}>
                 <TableCell sx={{ fontWeight: 600 }}>Rank</TableCell>

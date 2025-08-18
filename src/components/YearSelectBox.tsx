@@ -41,7 +41,7 @@ const YearSelectBox: React.FC<YearSelectBoxProps> = ({ value, onChange, children
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', ...sx }}>
-      <FormControl size="small" sx={{ minWidth: 120 }} disabled={loading || years.length === 0}>
+      <FormControl sx={{ minWidth: '110px' }} disabled={loading || years.length === 0}>
         <InputLabel>{label}</InputLabel>
         <Select
           value={value ?? ''}

@@ -40,7 +40,7 @@ const SemanticEvolutionPanel: React.FC<SemanticEvolutionPanelProps> = ({ vocab }
           : 'Semantic Evolution Over Time'}
       </Typography>
       <Typography variant="body2" sx={{ mb: 2, color: '#666' }}>
-        Select multiple words in each group to compare their average vectors over time.
+        Monitor evolution of cosine similarity between averaged word group vectors. Select multiple words in each group to compare their average vectors over time.
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
         {/* Word A input */}
@@ -63,7 +63,7 @@ const SemanticEvolutionPanel: React.FC<SemanticEvolutionPanelProps> = ({ vocab }
           sx={{ minWidth: 200, flex: 1 }}
           multiple={true}
         />
-        <Button variant="contained" onClick={handlePlot} disabled={!wordGroups[0].length || !wordGroups[1].length} sx={{ alignSelf: 'flex-start', height: 40, minWidth: 100, boxShadow: 'none', textTransform: 'none', fontWeight: 500 }}>
+        <Button variant="contained" onClick={handlePlot} disabled={!wordGroups[0].length || !wordGroups[1].length} sx={{ height: '55px', alignSelf: 'flex-start', minWidth: 100, boxShadow: 'none', textTransform: 'none', fontWeight: 500 }}>
           Plot
         </Button>
       </Box>
@@ -71,10 +71,30 @@ const SemanticEvolutionPanel: React.FC<SemanticEvolutionPanelProps> = ({ vocab }
       {data && (
         <>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={data} margin={{ top: 16, right: 16, left: 0, bottom: 0 }}>
+            <LineChart data={data} margin={{ top: 16, right: 16, left: 60, bottom: 40 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="year" tick={{ fontSize: 12 }} />
-              <YAxis domain={[-1, 1]} tick={{ fontSize: 12 }} />
+              <XAxis 
+                dataKey="year" 
+                tick={{ fontSize: 12 }}
+                label={{ 
+                  value: "Year", 
+                  position: "bottom", 
+                  offset: 20,
+                  fontSize: 14,
+                  fill: "#666"
+                }}
+              />
+              <YAxis 
+                domain={[-1, 1]} 
+                tick={{ fontSize: 12 }}
+                label={{ 
+                  value: "Cosine Similarity", 
+                  position: "left", 
+                  fontSize: 14,
+                  fill: "#666",
+                  angle: -90
+                }}
+              />
               <Tooltip formatter={(v: number) => v.toFixed(4)} />
               {wordGroups.length >= 2 && (
                 <Line 

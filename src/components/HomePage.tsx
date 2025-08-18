@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography, Paper, Card, CardContent, Link, Chip } from '@mui/material';
 import { GitHub } from '@mui/icons-material';
+import MathText from './MathText';
 
 const HomePage: React.FC = () => {
   return (
@@ -81,6 +82,42 @@ const HomePage: React.FC = () => {
         </Typography>
       </Paper>
 
+      {/* How Embeddings Work */}
+      <Paper elevation={1} sx={{ p: 4, mb: 4, borderLeft: '4px solid #ff8f00' }}>
+        <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3, color: '#1b5e20' }}>
+          How Embeddings Work
+        </Typography>
+        
+        {/* Word to Vector Explanation */}
+        <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20', mt: 3 }}>
+          From Words to Vectors
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Word2vec transforms words into high-dimensional vectors (typically 100-300 dimensions) by analyzing their co-occurrence patterns in text. 
+          Words that appear in similar contexts get similar vector representations. Each word w becomes a vector <MathText>{`v_w \\in \\mathbb{R}^d`}</MathText> where d is the embedding dimension.
+        </Typography>
+        
+        {/* Cosine Similarity Explanation */}
+        <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20', mt: 3 }}>
+          Measuring Similarity: Cosine Similarity
+        </Typography>
+        <Typography variant="body1" paragraph>
+          The similarity between two word vectors is measured using cosine similarity: <MathText>{`\\cos(\\theta) = \\frac{v_1 \\cdot v_2}{||v_1|| \\cdot ||v_2||}`}</MathText>, 
+          where <MathText>{`\\cdot`}</MathText> denotes the dot product and <MathText>{`||v||`}</MathText> is the L2 norm. This measures the cosine of the angle between vectors, 
+          ranging from -1 (opposite directions) to 1 (same direction). A value of 0 indicates orthogonal vectors.
+        </Typography>
+        
+        {/* Vector Operations Explanation */}
+        <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20', mt: 3 }}>
+          Vector Operations
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Vector addition and subtraction work component-wise: <MathText>{`(v_1 \\pm v_2)_i = v_{1,i} \\pm v_{2,i}`}</MathText>. Averaging multiple word vectors 
+          computes their centroid: <MathText>{`v_{\\text{avg}} = \\frac{v_1 + v_2 + \\cdots + v_n}{n}`}</MathText>. These operations preserve semantic relationships 
+          and enable analogical reasoning and group comparisons.
+        </Typography>
+      </Paper>
+
       {/* Features Grid */}
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 4 }}>
         <Box sx={{ flex: '1 1 400px', minWidth: 0 }}>
@@ -95,9 +132,13 @@ const HomePage: React.FC = () => {
               <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20' }}>
                 Nearest Neighbors
               </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontStyle: 'italic' }}>
+                Compute argmax cosine similarity to find nearest neighbors in embedding space
+              </Typography>
               <Typography variant="body2" color="text.secondary">
-                Find the most semantically similar words for any term in a given year. Discover how word relationships 
-                change over time and explore the vocabulary available in each time period.
+                Find the most semantically similar words using cosine similarity. For a target word vector <MathText>{`v_{\\text{target}}`}</MathText>, 
+                we compute <MathText>{`\\arg\\max_{w \\in \\text{vocab}} \\cos(v_{\\text{target}}, v_w)`}</MathText> to find the N words with highest similarity scores. 
+                This reveals which words have the most similar semantic contexts in the embedding space.
               </Typography>
             </CardContent>
           </Card>
@@ -114,9 +155,13 @@ const HomePage: React.FC = () => {
               <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20' }}>
                 Semantic Evolution
               </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontStyle: 'italic' }}>
+                Monitor temporal evolution of cosine similarity between averaged word group vectors
+              </Typography>
               <Typography variant="body2" color="text.secondary">
-                Track how the relationship between word groups changes across years. Analyze semantic shifts and 
-                quantify language evolution patterns.
+                Track semantic shifts by computing cosine similarity between word group average vectors over time. 
+                For groups A and B, we compute <MathText>{`v_A = \\frac{v_{a_1} + v_{a_2} + \\cdots + v_{a_n}}{n}`}</MathText> and <MathText>{`v_B = \\frac{v_{b_1} + v_{b_2} + \\cdots + v_{b_m}}{m}`}</MathText>, 
+                then plot <MathText>{`\\cos(v_A, v_B)`}</MathText> across years to quantify how group relationships evolve.
               </Typography>
             </CardContent>
           </Card>
@@ -133,9 +178,13 @@ const HomePage: React.FC = () => {
               <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20' }}>
                 Embedding Projection
               </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontStyle: 'italic' }}>
+                Project high-dimensional vectors onto 1D/2D semantic axes using dot product operations
+              </Typography>
               <Typography variant="body2" color="text.secondary">
-                Interactive 1D and 2D projections with customizable semantic axes. Toggle between modes to 
-                explore words along single dimensions or in 2D semantic spaces.
+                1D projection: Project word vectors onto a semantic axis using <MathText>{`\\text{proj}(v, \\text{axis}) = \\frac{v \\cdot \\text{axis}}{||\\text{axis}||^2} \\cdot \\text{axis}`}</MathText>. 
+                2D projection: Use two orthogonal semantic axes to create a 2D semantic space. Words are positioned based on 
+                their projections onto these custom semantic dimensions, revealing underlying semantic structure.
               </Typography>
             </CardContent>
           </Card>
@@ -152,9 +201,13 @@ const HomePage: React.FC = () => {
               <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: '#1b5e20' }}>
                 Word Analogies
               </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontStyle: 'italic' }}>
+                Perform vector arithmetic operations and find closest matches via cosine similarity
+              </Typography>
               <Typography variant="body2" color="text.secondary">
-                Explore semantic relationships through vector arithmetic. Enter expressions like "king - man + woman" 
-                to discover how language encodes conceptual patterns and relationships.
+                Solve analogies through vector arithmetic: <MathText>{`v_{\\text{result}} = v_{\\text{king}} - v_{\\text{man}} + v_{\\text{woman}}`}</MathText>. The resulting vector <MathText>{`v_{\\text{result}}`}</MathText> 
+                represents the target concept. We then find words w with highest cosine similarity to this target: 
+                <MathText>{`\\arg\\max_{w \\in \\text{vocab}} \\cos(v_{\\text{result}}, v_w)`}</MathText>, revealing how language encodes conceptual relationships.
               </Typography>
             </CardContent>
           </Card>

@@ -335,6 +335,9 @@ const ProjectionPanel: React.FC = () => {
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, letterSpacing: 0.5 }}>
         Embedding Projection
       </Typography>
+      <Typography variant="body2" sx={{ mb: 2, color: '#666' }}>
+        Project high-dimensional vectors onto 1D/2D semantic axes using dot product operations. Create custom semantic dimensions and visualize word relationships in reduced spaces.
+      </Typography>
       
       {/* Projection Mode Toggle */}
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
@@ -350,10 +353,10 @@ const ProjectionPanel: React.FC = () => {
           }}
           aria-label="projection mode"
         >
-          <ToggleButton value="1D" aria-label="1D projection">
+          <ToggleButton value="1D" aria-label="1D projection" sx={{ height: '55px' }}>
             1D Projection
           </ToggleButton>
-          <ToggleButton value="2D" aria-label="2D projection">
+          <ToggleButton value="2D" aria-label="2D projection" sx={{ height: '55px' }}>
             2D Projection
           </ToggleButton>
         </ToggleButtonGroup>
@@ -362,8 +365,8 @@ const ProjectionPanel: React.FC = () => {
       {/* X Axis Configuration (shared between modes) */}
       <Paper sx={{ p: 2, mb: 2 }}>
         <Typography variant="subtitle1" sx={{ fontWeight: 500, mb: 1 }}>X Axis</Typography>
-        <TextField label="Positive Pole Label" value={posLabel} onChange={e => setPosLabel(e.target.value)} size="small" sx={{ mb: 2, mr: 2 }} />
-        <TextField label="Negative Pole Label" value={negLabel} onChange={e => setNegLabel(e.target.value)} size="small" sx={{ mb: 2, mr: 2 }} />
+        <TextField label="Positive Pole Label" value={posLabel} onChange={e => setPosLabel(e.target.value)} sx={{ mb: 2, mr: 2 }} />
+        <TextField label="Negative Pole Label" value={negLabel} onChange={e => setNegLabel(e.target.value)} sx={{ mb: 2, mr: 2 }} />
         <WordAutocompleteBox
           options={vocab}
           value={posWords}
@@ -386,8 +389,8 @@ const ProjectionPanel: React.FC = () => {
       {projectionMode === '2D' && (
         <Paper sx={{ p: 2, mb: 2 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 500, mb: 1 }}>Y Axis</Typography>
-          <TextField label="Y Positive Pole Label" value={yPosLabel} onChange={e => setYPosLabel(e.target.value)} size="small" sx={{ mb: 2, mr: 2 }} />
-          <TextField label="Y Negative Pole Label" value={yNegLabel} onChange={e => setYNegLabel(e.target.value)} size="small" sx={{ mb: 2, mr: 2 }} />
+          <TextField label="Y Positive Pole Label" value={yPosLabel} onChange={e => setYPosLabel(e.target.value)} sx={{ mb: 2, mr: 2 }} />
+          <TextField label="Y Negative Pole Label" value={yNegLabel} onChange={e => setYNegLabel(e.target.value)} sx={{ mb: 2, mr: 2 }} />
           <WordAutocompleteBox
             options={vocab}
             value={yPosWords}
@@ -418,7 +421,7 @@ const ProjectionPanel: React.FC = () => {
         <Button 
           variant="contained" 
           color="primary" 
-          sx={{ height: 40, minWidth: 120, fontWeight: 500 }} 
+          sx={{ height: '55px', minWidth: 120, fontWeight: 500 }} 
           onClick={handleProject} 
           disabled={
             projecting || 
@@ -429,9 +432,9 @@ const ProjectionPanel: React.FC = () => {
         >
           Project
         </Button>
-        <Button variant="outlined" sx={{ height: 40 }} onClick={() => zoom(0.5)} disabled={!domain && !xDomain}>Zoom In</Button>
-        <Button variant="outlined" sx={{ height: 40 }} onClick={() => zoom(2)} disabled={!domain && !xDomain}>Zoom Out</Button>
-        <Button variant="outlined" sx={{ height: 40 }} onClick={resetZoom} disabled={!domain && !xDomain}>Reset</Button>
+        <Button variant="outlined" sx={{ height: '55px' }} onClick={() => zoom(0.5)} disabled={!domain && !xDomain}>Zoom In</Button>
+        <Button variant="outlined" sx={{ height: '55px' }} onClick={() => zoom(2)} disabled={!domain && !xDomain}>Zoom Out</Button>
+        <Button variant="outlined" sx={{ height: '55px' }} onClick={resetZoom} disabled={!domain && !xDomain}>Reset</Button>
       </Box>
 
       {/* 1D Visualization */}

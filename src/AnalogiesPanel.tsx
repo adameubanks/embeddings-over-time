@@ -88,7 +88,7 @@ const AnalogiesPanel: React.FC = () => {
         Word Analogies
       </Typography>
       <Typography variant="body2" sx={{ mb: 3, color: '#666' }}>
-        Explore word relationships through vector arithmetic. Enter expressions like "king - man + woman" to find similar words.
+        Perform vector arithmetic operations and find closest matches via cosine similarity.
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap', alignItems: 'flex-start' }}>
@@ -99,16 +99,14 @@ const AnalogiesPanel: React.FC = () => {
           value={expression}
           onChange={(e) => setExpression(e.target.value)}
           onKeyPress={handleKeyPress}
-          sx={{ minWidth: 300, flex: 1 }}
           helperText="Use format: word1 - word2 + word3"
+          sx={{ width: '425px'}}
         />
         <TextField
           label="N"
           type="number"
-          size="small"
           value={n}
           onChange={(e) => setN(Math.max(1, Math.min(100, Number(e.target.value))))}
-          sx={{ width: 100 }}
           InputProps={{
             inputProps: { min: 1, max: 100 }
           }}
@@ -117,7 +115,7 @@ const AnalogiesPanel: React.FC = () => {
           variant="contained"
           onClick={handleCompute}
           disabled={!expression.trim() || selectedYear == null || loading}
-          sx={{ minWidth: 120 }}
+          sx={{ height: '55px' }}
         >
           {loading ? <CircularProgress size={20} /> : 'Compute'}
         </Button>
@@ -151,7 +149,6 @@ const AnalogiesPanel: React.FC = () => {
                     <TableCell>
                       <Chip 
                         label={result.word} 
-                        size="small" 
                         variant="outlined"
                         sx={{ fontFamily: 'monospace' }}
                       />

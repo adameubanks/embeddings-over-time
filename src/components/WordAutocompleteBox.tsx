@@ -92,12 +92,20 @@ const WordAutocompleteBox: React.FC<WordAutocompleteBoxProps> = ({
       onInputChange={(_, v) => setInputValue(v)}
       filterOptions={x => x} // Already filtered
       getOptionLabel={option => option}
-      disabled={disabled}
-      sx={sx}
-      renderInput={params => (
-        <TextField {...params} label={label} helperText={helperText} size="small" />
-      )}
-      {...rest}
+              disabled={disabled}
+        sx={sx}
+        renderInput={params => (
+          <TextField 
+            {...params} 
+            label={label} 
+            helperText={helperText}
+            sx={{
+              '& .MuiInputBase-root': {
+              }
+            }}
+          />
+        )}
+        {...rest}
     />
   );
 };
