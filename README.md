@@ -23,6 +23,20 @@ An interactive platform for exploring how language has evolved over time through
 - **Deployment**: GitHub Pages
 - **Data**: Word2vec embeddings from FineWeb dataset (2005-2025)
 
+## 🤗 Models & Data
+
+All word2vec models and metrics used in this project are available on **Hugging Face**:
+
+**[📊 YearlyWord2Vec Models](https://huggingface.co/adameubanks/YearlyWord2Vec)**
+
+This repository contains:
+- **Word2vec embeddings** for each year (2005-2025) trained on FineWeb data
+- **Vocabulary files** for each year's model
+- **Model metadata** and training information
+- **Download links** for all embedding files
+
+The models are trained using the word2vec library on yearly subsets of the FineWeb dataset, providing a comprehensive view of language evolution across nearly two decades.
+
 ## 🎯 Research Context
 
 This project is part of a larger research initiative exploring how embedding spaces can quantify language evolution over time. By analyzing semantic shifts in word vectors across different years, we can gain insights into how language, culture, and technology have influenced our vocabulary and communication patterns.

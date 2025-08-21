@@ -102,6 +102,29 @@ const App: React.FC = () => {
             </Tooltip>
           </Box>
           
+          {/* Hugging Face Link */}
+          <Box sx={{ mr: 2 }}>
+            <Tooltip title="View Models on Hugging Face">
+              <IconButton 
+                component="a" 
+                href="https://huggingface.co/adameubanks/YearlyWord2Vec" 
+                target="_blank"
+                sx={{ color: 'inherit' }}
+              >
+                <Box sx={{ 
+                  width: 24, 
+                  height: 24, 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  fontSize: '20px'
+                }}>
+                  🤗
+                </Box>
+              </IconButton>
+            </Tooltip>
+          </Box>
+          
           <Tabs
             value={selectedTab}
             onChange={(_, v) => setSelectedTab(v)}

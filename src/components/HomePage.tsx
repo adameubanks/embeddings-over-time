@@ -56,6 +56,35 @@ const HomePage: React.FC = () => {
               clickable
             />
           </Link>
+          <Link href="https://huggingface.co/adameubanks/YearlyWord2Vec" target="_blank" sx={{ textDecoration: 'none' }}>
+            <Chip 
+              icon={<Box component="span" sx={{ 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                fontSize: '18px',
+                fontWeight: 'bold',
+                color: '#1b5e20'
+              }}>🤗</Box>} 
+              label="View on Hugging Face" 
+              sx={{ 
+                bgcolor: '#ff8f00', 
+                color: '#1b5e20',
+                fontWeight: 600,
+                fontSize: '0.9rem',
+                px: 2,
+                py: 1,
+                border: '2px solid #ff8f00',
+                '&:hover': { 
+                  bgcolor: '#ff9800',
+                  borderColor: '#f57c00',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 4px 8px rgba(255,143,0,0.3)'
+                },
+                transition: 'all 0.2s ease-in-out'
+              }}
+              clickable
+            />
+          </Link>
         </Box>
       </Paper>
 
@@ -75,10 +104,13 @@ const HomePage: React.FC = () => {
           those containing years in their URLs (2020, 2019, etc.) and grouped them accordingly. This process allowed us to 
           create distinct yearly subsets spanning 2005-2025.
         </Typography>
-        <Typography variant="body1">
+        <Typography variant="body1" paragraph>
           For each year's article group, we trained word2vec embeddings using the word2vec library, capturing the semantic 
           relationships present in that time period's web content. The resulting embeddings were then compressed for efficient 
           storage and loading, providing a comprehensive view of language evolution across nearly two decades.
+        </Typography>
+        <Typography variant="body1">
+          All models and metrics used in this project are available on <Link href="https://huggingface.co/adameubanks/YearlyWord2Vec" target="_blank" sx={{ color: '#ff8f00', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>Hugging Face</Link>. This repository contains the complete collection of word2vec embeddings, vocabulary files, and model metadata for researchers and developers interested in exploring language evolution over time.
         </Typography>
       </Paper>
 
