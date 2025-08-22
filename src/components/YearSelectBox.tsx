@@ -49,7 +49,9 @@ const YearSelectBox: React.FC<YearSelectBoxProps> = ({ value, onChange, children
           onChange={handleChange}
         >
           {years.map(year => (
-            <MenuItem key={year} value={year}>{year}</MenuItem>
+            <MenuItem key={year} value={year}>
+              {year === 2025 ? '2025-06' : year}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

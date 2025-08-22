@@ -102,7 +102,7 @@ const HomePage: React.FC = () => {
           Our embeddings are based on the <Link href="https://huggingface.co/datasets/HuggingFaceFW/fineweb" target="_blank" sx={{ color: '#ff8f00', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>FineWeb dataset</Link>, specifically from the first 3 and last 3 web crawls of 
           this comprehensive web corpus. To create yearly snapshots of language evolution, we filtered articles by identifying 
           those containing years in their URLs (2020, 2019, etc.) and grouped them accordingly. This process allowed us to 
-          create distinct yearly subsets spanning 2005-2025.
+          create distinct yearly subsets spanning 2005-2025 (2025 data through June).
         </Typography>
         <Typography variant="body1" paragraph>
           For each year's article group, we trained word2vec embeddings using the word2vec library, capturing the semantic 
