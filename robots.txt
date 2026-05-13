@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://adameubanks.github.io/embeddings-over-time/sitemap.xml
