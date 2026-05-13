@@ -87,6 +87,21 @@ const App: React.FC = () => {
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600, letterSpacing: 0.5 }}>
             Embeddings Over Time Explorer
           </Typography>
+
+          <Box
+            component="a"
+            href={`${import.meta.env.BASE_URL}about/`}
+            sx={{
+              color: 'inherit',
+              textDecoration: 'none',
+              mr: 2,
+              fontWeight: 500,
+              fontSize: '0.95rem',
+              '&:hover': { textDecoration: 'underline' },
+            }}
+          >
+            About
+          </Box>
           
           {/* GitHub Link */}
           <Box sx={{ mr: 2 }}>

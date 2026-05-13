@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <title>About — Embeddings Over Time Explorer (FineWeb word2vec, 2005–2022)</title>
+    <meta
+      name="description"
+      content="About the Embeddings Over Time Explorer: yearly word2vec models on FineWeb, semantic drift, nearest neighbors, projections, and analogies. Research by Adam Eubanks (BYU)."
+    />
+    <link rel="canonical" href="https://adameubanks.github.io/embeddings-over-time/about/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://adameubanks.github.io/embeddings-over-time/about/" />
+    <meta property="og:title" content="About — Embeddings Over Time Explorer" />
+    <meta
+      property="og:description"
+      content="Yearly word2vec embeddings on FineWeb (2005–2022): explore language change via nearest neighbors, semantic evolution, 2D projections, and analogies."
+    />
+    <meta property="og:image" content="https://adameubanks.github.io/embeddings-over-time/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="About — Embeddings Over Time Explorer" />
+    <meta
+      name="twitter:description"
+      content="Yearly word2vec on FineWeb (2005–2022): neighbors, drift, projections, analogies. Adam Eubanks, BYU."
+    />
+    <meta name="twitter:image" content="https://adameubanks.github.io/embeddings-over-time/og-image.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "name": "About — Embeddings Over Time Explorer",
+        "description": "Background on the interactive explorer for yearly word2vec embeddings trained on FineWeb (2005–2022).",
+        "url": "https://adameubanks.github.io/embeddings-over-time/about/",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "Embeddings Over Time Explorer",
+          "url": "https://adameubanks.github.io/embeddings-over-time/"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Adam Eubanks",
+          "email": "adameuba@byu.edu",
+          "affiliation": {
+            "@type": "CollegeOrUniversity",
+            "name": "Brigham Young University"
+          }
+        }
+      }
+    </script>
+    <style>
+      :root {
+        --green: #1b5e20;
+        --green-mid: #2e7d32;
+        --amber: #ff8f00;
+        --text: #1a1a1a;
+        --muted: #424242;
+        --bg: #fafafa;
+        --card: #fff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.6;
+      }
+      header {
+        background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+        color: #fff;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      header .inner {
+        max-width: 52rem;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem 1.25rem;
+      }
+      header a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      header a:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      header nav {
+        margin-left: auto;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        font-size: 0.95rem;
+      }
+      main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 3rem;
+      }
+      .hero {
+        background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+        color: #fff;
+        padding: 2rem 1.5rem;
+        margin: -2rem -1.5rem 2rem;
+        border-radius: 0 0 0.5rem 0.5rem;
+      }
+      .hero h1 {
+        margin: 0 0 0.5rem;
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        font-weight: 700;
+        line-height: 1.2;
+      }
+      .hero p {
+        margin: 0;
+        opacity: 0.92;
+        font-size: 1.05rem;
+      }
+      .cta {
+        display: inline-block;
+        margin-top: 1.25rem;
+        padding: 0.6rem 1.1rem;
+        background: var(--amber);
+        color: var(--green);
+        font-weight: 600;
+        border-radius: 4px;
+        text-decoration: none;
+        border: 2px solid var(--amber);
+      }
+      .cta:hover {
+        filter: brightness(1.05);
+      }
+      section {
+        background: var(--card);
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 1.5rem 1.25rem;
+        margin-bottom: 1.25rem;
+        border-left: 4px solid var(--amber);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      }
+      h2 {
+        margin: 0 0 0.75rem;
+        font-size: 1.25rem;
+        color: var(--green);
+      }
+      p {
+        margin: 0 0 0.85rem;
+        color: var(--muted);
+      }
+      p:last-child {
+        margin-bottom: 0;
+      }
+      a.inline {
+        color: var(--amber);
+        font-weight: 500;
+        text-decoration: none;
+      }
+      a.inline:hover {
+        text-decoration: underline;
+      }
+      ul {
+        margin: 0.5rem 0 0;
+        padding-left: 1.25rem;
+        color: var(--muted);
+      }
+      li {
+        margin-bottom: 0.35rem;
+      }
+      footer {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 0 1.5rem 2.5rem;
+        font-size: 0.9rem;
+        color: var(--muted);
+        text-align: center;
+      }
+      footer a {
+        color: var(--green-mid);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="inner">
+        <a href="../">Embeddings Over Time Explorer</a>
+        <nav>
+          <a href="../">Interactive app</a>
+          <a href="https://github.com/adameubanks/embeddings-over-time" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://huggingface.co/adameubanks/YearlyWord2Vec" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="hero">
+        <h1>About the Embeddings Over Time Explorer</h1>
+        <p>
+          An interactive research interface for yearly word2vec embeddings built from web text, so you can see how usage and
+          meaning patterns shift across years.
+        </p>
+        <a class="cta" href="../">Open the explorer</a>
+      </div>
+
+      <section>
+        <h2>What this project is</h2>
+        <p>
+          The explorer lets you query models trained separately per year: find nearest neighbors for a word, plot semantic
+          drift between word groups over time, project vectors onto interpretable axes, and run classic vector analogies. It is
+          designed for researchers, students, and curious readers who want a hands-on view of distributional semantics over
+          time—not just a static paper figure.
+        </p>
+      </section>
+
+      <section>
+        <h2>Data and training</h2>
+        <p>
+          Embeddings are trained with word2vec on year-conditioned slices derived from the
+          <a class="inline" href="https://huggingface.co/datasets/HuggingFaceFW/fineweb" target="_blank" rel="noopener noreferrer"
+            >FineWeb</a
+          >
+          corpus. Articles are grouped into yearly subsets (including by year cues in URLs), then each year’s text is used to
+          fit its own embedding space. Public artifacts—including models and vocabulary—are published on Hugging Face under
+          <a class="inline" href="https://huggingface.co/adameubanks/YearlyWord2Vec" target="_blank" rel="noopener noreferrer"
+            >YearlyWord2Vec</a
+          >.
+        </p>
+        <p>
+          Web text reflects many languages and communities; the UI is in English, but the underlying slices are not limited to
+          one dialect—more “babel du web” than a single textbook corpus.
+        </p>
+      </section>
+
+      <section>
+        <h2>What you can explore</h2>
+        <ul>
+          <li><strong>Nearest neighbors</strong> — cosine-similar words in a chosen year.</li>
+          <li><strong>Semantic evolution</strong> — how relationships between word groups change across years.</li>
+          <li><strong>Projection</strong> — 1D/2D views along semantic directions you define.</li>
+          <li><strong>Analogies</strong> — vector arithmetic (e.g. king − man + woman) with nearest-neighbor decoding.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Research context</h2>
+        <p>
+          The site supports a broader research program on quantifying language change with embedding spaces: comparing years,
+          surfacing drift, and making the geometry of word2vec-style models tangible for teaching and replication.
+        </p>
+      </section>
+
+      <section>
+        <h2>Author and contact</h2>
+        <p>
+          <strong>Adam Eubanks</strong><br />
+          Brigham Young University<br />
+          <a class="inline" href="mailto:adameuba@byu.edu">adameuba@byu.edu</a>
+        </p>
+      </section>
+    </main>
+    <footer>
+      <p>
+        <a href="../">Home</a>
+        ·
+        <a href="https://github.com/adameubanks/embeddings-over-time" target="_blank" rel="noopener noreferrer">Source code</a>
+      </p>
+    </footer>
+  </body>
+</html>
