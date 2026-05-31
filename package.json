@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:hf": "tsc -b && vite build --mode hf",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "vite build && cp README.md dist/ && gh-pages -d dist"
+    "deploy": "vite build && cp README.md dist/ && gh-pages -d dist",
+    "deploy:hf": "bash scripts/deploy-hf-space.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

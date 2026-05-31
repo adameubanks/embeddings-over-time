@@ -56,7 +56,7 @@ const HomePage: React.FC = () => {
               clickable
             />
           </Link>
-          <Link href="https://huggingface.co/adameubanks/YearlyWord2Vec" target="_blank" sx={{ textDecoration: 'none' }}>
+          <Link href="https://huggingface.co/spaces/adameubanks/embeddings-over-time" target="_blank" sx={{ textDecoration: 'none' }}>
             <Chip 
               icon={<Box component="span" sx={{ 
                 display: 'inline-flex', 
@@ -65,7 +65,7 @@ const HomePage: React.FC = () => {
                 fontWeight: 'bold',
                 color: '#1b5e20'
               }}>🤗</Box>} 
-              label="View on Hugging Face" 
+              label="Hugging Face Space" 
               sx={{ 
                 bgcolor: '#ff8f00', 
                 color: '#1b5e20',

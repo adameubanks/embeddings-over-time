@@ -119,10 +119,10 @@ const App: React.FC = () => {
           
           {/* Hugging Face Link */}
           <Box sx={{ mr: 2 }}>
-            <Tooltip title="View Models on Hugging Face">
+            <Tooltip title="Open interactive demo on Hugging Face Space">
               <IconButton 
                 component="a" 
-                href="https://huggingface.co/adameubanks/YearlyWord2Vec" 
+                href="https://huggingface.co/spaces/adameubanks/embeddings-over-time" 
                 target="_blank"
                 sx={{ color: 'inherit' }}
               >
