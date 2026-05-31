@@ -6,7 +6,10 @@ An interactive platform for exploring how language has evolved over time through
 
 ## 🚀 Live Demo
 
-**[Try it out here](https://adameubanks.github.io/embeddings-over-time/)**
+- **[GitHub Pages](https://adameubanks.github.io/embeddings-over-time/)**
+- **[Hugging Face Space](https://huggingface.co/spaces/adameubanks/embeddings-over-time)** — same interactive app, discoverable on the Hub
+
+Deploy the Space from this repo: `npm run deploy:hf`
 
 ## ✨ Features
 

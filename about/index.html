@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQNQ7SQM7P"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-YQNQ7SQM7P');
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="LrzZqDA73Ew-OpTfO6JEGLTldmYZuwU3Az9vuqKScnQ" />
@@ -196,7 +205,8 @@
         <nav>
           <a href="../">Interactive app</a>
           <a href="https://github.com/adameubanks/embeddings-over-time" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://huggingface.co/adameubanks/YearlyWord2Vec" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+          <a href="https://huggingface.co/spaces/adameubanks/embeddings-over-time" target="_blank" rel="noopener noreferrer">HF Space</a>
+          <a href="https://huggingface.co/adameubanks/YearlyWord2Vec" target="_blank" rel="noopener noreferrer">Models</a>
         </nav>
       </div>
     </header>
@@ -228,7 +238,10 @@
             >FineWeb</a
           >
           corpus. Articles are grouped into yearly subsets (including by year cues in URLs), then each year’s text is used to
-          fit its own embedding space. Public artifacts—including models and vocabulary—are published on Hugging Face under
+          fit its own embedding space. The same interactive app runs on
+          <a class="inline" href="https://huggingface.co/spaces/adameubanks/embeddings-over-time" target="_blank" rel="noopener noreferrer"
+            >Hugging Face Spaces</a
+          >; models and vocabulary are under
           <a class="inline" href="https://huggingface.co/adameubanks/YearlyWord2Vec" target="_blank" rel="noopener noreferrer"
             >YearlyWord2Vec</a
           >.
